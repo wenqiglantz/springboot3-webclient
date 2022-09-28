@@ -1,0 +1,60 @@
+name: CI/CD Native Image workflow to build and deploy to AWS Lambda
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to run the workflow against'
+        type: environment
+        required: true
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+
+  build-and-deploy:
+
+    runs-on: ubuntu-latest
+
+    environment: ${{ inputs.env || 'dev' }}
+
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@248ae51c2e8cc9622ecf50685c8bf7150c6e8813
+        with:
+          egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
+
+      - name: Checkout Code
+        uses: actions/checkout@d0651293c4a5a52e711f25b41b05b2212f385d28
+
+      - uses: graalvm/setup-graalvm@01b9840538b867061986ea406d1b79c91a701d17
+        with:
+          version: 'latest'
+          java-version: '17'
+          components: 'native-image'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          cache: maven
+
+      - name: Print debug info
+        run: |
+          echo "GRAALVM_HOME: $GRAALVM_HOME"
+          echo "JAVA_HOME: $JAVA_HOME"
+          java --version
+          gu --version
+          native-image --version
+
+      - name: Build Native Image
+        run: |
+          mvn -ntp clean package -Pnative -e -X
+
+      - name: Deploy to Lambda
+        uses: appleboy/lambda-action@8c9cc527cbace098d3972e12afc930e53c721d07
+        with:
+          # we have to use access key and secret key here, IAM role didn't work
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_region: ${{ secrets.AWS_REGION }}
+          function_name: lambda-test
+          zip_file: target/demo-0.0.1-SNAPSHOT-native-zip.zip
