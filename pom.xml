@@ -77,6 +77,9 @@
 		</dependencies>
 	</dependencyManagement>
 
+	<profiles>
+	<profile>
+	<id>native</id>
 	<build>
 		<plugins>
 			<plugin>
@@ -130,6 +133,8 @@
 			</plugin>
 		</plugins>
 	</build>
+	</profile>
+	</profiles>
 
 	<repositories>
 		<repository>
