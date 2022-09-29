@@ -77,9 +77,6 @@
 		</dependencies>
 	</dependencyManagement>
 
-	<profiles>
-	<profile>
-	<id>native</id>
 	<build>
 		<plugins>
 			<plugin>
@@ -104,7 +101,7 @@
 					</descriptors>
 				</configuration>
 			</plugin>
-			<plugin>
+			<!--<plugin>
 				<groupId>org.graalvm.buildtools</groupId>
 				<artifactId>native-maven-plugin</artifactId>
 				<version>0.9.14</version>
@@ -117,24 +114,15 @@
 						</goals>
 						<phase>package</phase>
 					</execution>
-					<!--<execution>
-                        <id>test-native</id>
-                        <goals>
-                            <goal>test</goal>
-                        </goals>
-                        <phase>test</phase>
-                    </execution>-->
 				</executions>
 				<configuration>
 					<metadataRepository>
 						<enabled>true</enabled>
 					</metadataRepository>
 				</configuration>
-			</plugin>
+			</plugin>-->
 		</plugins>
 	</build>
-	</profile>
-	</profiles>
 
 	<repositories>
 		<repository>
