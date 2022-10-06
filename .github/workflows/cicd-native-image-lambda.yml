@@ -43,7 +43,7 @@ jobs:
 
       - name: Build Native Image
         run: |
-          mvn -ntp clean package -Pnative -e -X
+          mvn -ntp clean package -Dmaven.test.skip -Pnative -e -X
 
       - name: Deploy to Lambda
         uses: appleboy/lambda-action@8c9cc527cbace098d3972e12afc930e53c721d07
