@@ -5,6 +5,6 @@ Spring Boot 3.0.0-M5 app, with native support built in, and Spring Cloud Functio
 
 ### Tech Stack
 
-* Spring Boot 3.0.0-M5
+* Spring Boot 3.0.0-SNAPSHOT
 * Spring Cloud Function
 * WebClient
