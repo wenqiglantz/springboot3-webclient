@@ -43,7 +43,7 @@ jobs:
 
       - name: Build Native Image
         run: |
-          mvn -ntp clean -Pnative native:compile -e -X
+          mvn -ntp clean -Pnative native:compile
           mvn package
 
       - name: Deploy to Lambda
